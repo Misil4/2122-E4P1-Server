@@ -16,20 +16,26 @@ export const getUserById = (req, res) => {
 };
 export const insertUserData = (req, res) => {
     const data = {
-        name : req.body.displayName,
+        name : req.body.name,
         email : req.body.email,
         rol : "user",
         login_status : false
     };
-    UserModel.findOne({ email: data.email }, (err, user) => {
+    UserModel.findOne({ email: req.body.email }, (err, user) => {
         if (err) return res.status(500).send({ message: `Error al realizar la petición: ${err}` });
-        if (user === null) {
+        if (!user) {
             UserModel.create(data, (err, docs) => {
                 if (err) return res.status(500).send({ message: `Error al realizar la petición: ${err}` });
                 res.send({ data: docs });
             })
         }
-        else {res.send({data : user})}
+        else if (user.rol === "admin") {
+            data.rol = "admin";
+            res.send({ data: user });
+        }
+        else {
+            res.send({ data: user });
+        }
     })
 }
 export const updateUserData = (req, res) => {
@@ -61,8 +67,9 @@ export const updateUserStatus = (req, res) => {
         }
     UserModel.updateOne({email: userEmail}, { $set: {login_status: login_status} }, { new: true }, (err, docs) => {
         if (err) return res.status(500).send({ message: `Error al realizar la petición: ${err}` });
-        if (!docs) return res.status(404).send({ message: `No existe ese user` });
-        res.send({ data: userEmail });
+        if (!docs) return res.status(404).send({ message: `No existe ese user e` });
+        res.send({ data: docs });
+        
     })
 })
 }
