@@ -8,17 +8,17 @@ import router from "./routes/routes.js";
 import { Server } from "socket.io";
 
 
-const server = require('http').createServer(app);
+//const server = require('http').createServer(app);
 
-const io = require('socket.io')(server);
+/*const io = require('socket.io')(server);
 io.on('connection', client => {
     client.on('event', data => { app.js });
-    client.on('disconnect', () => { /* … */ });
+    client.on('disconnect', () => { /* … */ /*});
   });
   server.listen(3000, function () { 
     console.log("Servidor corriendo en http://localhost:3000")
   });
-  io.listen(3000);
+  io.listen(3000);*/
 
 const app  = Express();
 const port = process.env.PORT || 3001;
