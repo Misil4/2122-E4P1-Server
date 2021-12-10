@@ -3,11 +3,12 @@ import  Express  from "express";
 const router = Express.Router();
 import { getAllUsers, getUserById, insertUserData, updateUserData, deleteUserData, updateUserStatus} from "../controllers/UserController.js";
 import { getAllGarbages, getGarbageById, insertGarbageData, updateGarbageData, deleteGarbageData, updateGarbageStatus } from "../controllers/GarbageController.js";
-import { createNewJWT } from "../services/jwt.js";
+import { createJWT,createNewJWT } from "../services/jwt.js";
 import { verifyJWT } from "../middlewares/verifyJWT.js";
 
 {/* JWT */}
-router.post('/token/',createNewJWT)
+router.post('/token/',createJWT)
+router.post('/refresh/',createNewJWT)
 
 {/* USERS */}
 router.get('/users/',verifyJWT,getAllUsers);
