@@ -27,9 +27,8 @@ io.on('connection', socket => {
     })
   })
 
-
+  try {
   socket.on("badge_update", (email) => {
-    try {
     console.log("estamos en el server")
     console.log(email)
     let login_status = true;
@@ -44,9 +43,6 @@ io.on('connection', socket => {
           io.sockets.emit("change_data");
         })
       })
-    } catch (error) {
-      console.error(error)
-    }
 
 
 
@@ -58,6 +54,9 @@ io.on('connection', socket => {
         io.sockets.emit("change_data");
       });*/
   });
+} catch (error) {
+  console.error(error)
+}
 
   socket.on("garbage_data", () => {
     GarbageModel.find({ completed: false }).then(docs => {
