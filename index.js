@@ -29,10 +29,10 @@ io.on('connection', socket => {
 
 
   socket.on("badge_update", (email) => {
+    try {
     console.log("estamos en el server")
     console.log(email)
     let login_status = true;
-    try {
       UserModel.findOne({ email: email }, (err, docs) => {
         if (docs.login_status) {
           login_status = false
