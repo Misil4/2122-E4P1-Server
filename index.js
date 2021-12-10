@@ -28,6 +28,8 @@ io.on('connection', socket => {
 
 
     socket.on("badge_update", (email) => {
+      console.log("estamos en el server")
+      console.log(email)
       let login_status = true;
     UserModel.findOne({email : email}, (err,docs) => {
         if (docs.login_status) {
