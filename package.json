@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "firebase-admin": "^10.0.0",
     "jsonwebtoken": "^8.5.1",
+    "jwt-check-expiration": "^1.0.5",
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.15",
     "socket.io": "^4.4.0",
@@ -31,7 +32,6 @@
   },
   "type": "module",
   "devDependencies": {
-    "mongoose": "^6.0.12",
     "express": "^4.17.1",
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.15"

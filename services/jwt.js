@@ -41,11 +41,17 @@ export const createNewJWT = async (req,res) =>{
     let token = req.body.token;
     let email = req.body.email;
     try { 
-        let valid = jsonwebtoken.verify(token,process.env.SECRET_TOKEN_REFRESH);
-        if(valid) 
-        {
-        res.send({data : {access_token :generateAccessToken(email),refresh_token : generateRefreshToken(email)}})
-        }
+        if (isJwtExpired(token)) {
+        jsonwebtoken.verify(token,process.env.SECRET_TOKEN_REFRESH,(err,decoded) => {
+            if (err) {
+                res.send(err.message)
+            }
+            else {
+                res.send({data : {access_token :generateAccessToken(email),refresh_token : generateRefreshToken(email)}})
+            }
+        });
+    }
+    else res.send("TOKEN EXPIRED")
     } catch (error) {
         console.error(error);
         res.send(401)
