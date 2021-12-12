@@ -33,16 +33,19 @@ io.on('connection', socket => {
 
   try {
   socket.on("badge_update", (email) => {
-    console.log("estamos en el server")
+    console.log("EMAIL RECEIVED")
     console.log(email)
     let login_status = true;
       UserModel.findOne({ email: email }, (err, docs) => {
         if (docs.login_status) {
           login_status = false
         }
+        console.log("USER FIND RESULTS")
+        console.log(docs)
         UserModel.updateOne({ email: email }, { $set: { login_status: login_status } }, { new: true }, (err, docs) => {
           if (err) return console.log("error al realizar la peticion")
           if (!docs) return console.log("no existe el user")
+          console.log("UPDATE RESULTS")
           console.log(docs)
           io.sockets.emit("change_data");
         })
