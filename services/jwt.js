@@ -3,6 +3,7 @@ import jsonwebtoken from  'jsonwebtoken'
 import { createRequire } from "module";
 const require = createRequire(import.meta.url); // construct the require method
 import dotenv from 'dotenv'
+import { json } from 'express';
 dotenv.config()
 admin.initializeApp({
     credential: admin.credential.cert({
@@ -24,8 +25,8 @@ const generateAccessToken = (email) => {
 const generateRefreshToken = (email) => {
     return jsonwebtoken.sign({email : email},process.env.SECRET_TOKEN_REFRESH)
 }
-export const createNewJWT = async (req,res) =>{
-    let token = req.body.idToken;
+export const createJWT = async (req,res) =>{
+    let token = req.body.token;
     let email = req.body.email
     admin.auth().verifyIdToken(token,true).then(response => {
         res.send({data : {access_token :generateAccessToken(email),refresh_token : generateRefreshToken(email)}})
@@ -36,3 +37,24 @@ export const createNewJWT = async (req,res) =>{
     })
 }
 
+export const createNewJWT = async (req,res) =>{
+    let token = req.body.token;
+    let email = req.body.email;
+    try {
+        if (isJwtExpired(token)) {
+        jsonwebtoken.verify(token,process.env.SECRET_TOKEN_REFRESH,(err,decoded) => {
+            if (err) {
+                res.send(err.message)
+            }
+            else {
+                res.send({data : {access_token :generateAccessToken(email),refresh_token : generateRefreshToken(email)}})
+            }
+        });
+    }
+    else res.send("TOKEN EXPIRED")
+    } catch (error) {
+        console.error(error);
+        res.send(401)
+    }
+    
+}
