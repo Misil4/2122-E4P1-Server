@@ -4,7 +4,6 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url); // construct the require method
 import dotenv from 'dotenv'
 import { json } from 'express';
-import {isJwtExpired} from 'jwt-check-expiration'
 dotenv.config()
 admin.initializeApp({
     credential: admin.credential.cert({
@@ -41,18 +40,12 @@ export const createJWT = async (req,res) =>{
 export const createNewJWT = async (req,res) =>{
     let token = req.body.token;
     let email = req.body.email;
-    try {
-        if (isJwtExpired(token)) {
-        jsonwebtoken.verify(token,process.env.SECRET_TOKEN_REFRESH,(err,decoded) => {
-            if (err) {
-                res.send(err.message)
-            }
-            else {
-                res.send({data : {access_token :generateAccessToken(email),refresh_token : generateRefreshToken(email)}})
-            }
-        });
-    }
-    else res.send("TOKEN EXPIRED")
+    try { 
+        let valid = jsonwebtoken.verify(token,process.env.SECRET_TOKEN_REFRESH);
+        if(valid) 
+        {
+        res.send({data : {access_token :generateAccessToken(email),refresh_token : generateRefreshToken(email)}})
+        }
     } catch (error) {
         console.error(error);
         res.send(401)
