@@ -3,7 +3,6 @@ import Mongoose from "mongoose";
 import dotenv from 'dotenv'
 dotenv.config()
 import { createRequire } from "module";
-import router from "./routes/routes.js";
 import UserModel from "./models/userModel.js";
 import GarbageModel from "./models/garbageModel.js";
 const require = createRequire(import.meta.url);
@@ -12,17 +11,6 @@ import router from "./routes/routes.js";
 import { Server } from "socket.io";
 
 
-//const server = require('http').createServer(app);
-
-/*const io = require('socket.io')(server);
-io.on('connection', client => {
-    client.on('event', data => { app.js });
-    client.on('disconnect', () => { /* … */ /*});
-  });
-  server.listen(3000, function () { 
-    console.log("Servidor corriendo en http://localhost:3000")
-  });
-  io.listen(3000);*/
 
 const app  = Express();
 const port = process.env.PORT || 3001;

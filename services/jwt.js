@@ -40,7 +40,7 @@ export const createJWT = async (req,res) =>{
 export const createNewJWT = async (req,res) =>{
     let token = req.body.token;
     let email = req.body.email;
-    try { 
+    try {
         if (isJwtExpired(token)) {
         jsonwebtoken.verify(token,process.env.SECRET_TOKEN_REFRESH,(err,decoded) => {
             if (err) {
