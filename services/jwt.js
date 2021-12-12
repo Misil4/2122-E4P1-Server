@@ -4,7 +4,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url); // construct the require method
 import dotenv from 'dotenv'
 import { json } from 'express';
-import isJwtExpired from 'jwt-check-expiration'
+import {isJwtExpired} from 'jwt-check-expiration'
 dotenv.config()
 admin.initializeApp({
     credential: admin.credential.cert({
