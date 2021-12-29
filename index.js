@@ -5,6 +5,8 @@ dotenv.config()
 import { createRequire } from "module";
 import UserModel from "./models/userModel.js";
 import GarbageModel from "./models/garbageModel.js";
+console.log("CONFIG VARS LOADED")
+console.log(process.env)
 const require = createRequire(import.meta.url);
 const mongodbRoute = process.env.MONGO_DB_URI
 import router from "./routes/routes.js";
