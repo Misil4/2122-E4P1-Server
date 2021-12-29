@@ -1,12 +1,9 @@
 import Express from "express";
 import Mongoose from "mongoose";
-import dotenv from 'dotenv'
-dotenv.config()
+console.log(process.env)
 import { createRequire } from "module";
 import UserModel from "./models/userModel.js";
 import GarbageModel from "./models/garbageModel.js";
-console.log("CONFIG VARS LOADED")
-console.log(process.env)
 const require = createRequire(import.meta.url);
 const mongodbRoute = process.env.MONGO_DB_URI
 import router from "./routes/routes.js";
@@ -35,19 +32,16 @@ io.on('connection', socket => {
 
   try {
   socket.on("badge_update", (email) => {
-    console.log("EMAIL RECEIVED")
+    console.log("estamos en el server")
     console.log(email)
     let login_status = true;
       UserModel.findOne({ email: email }, (err, docs) => {
         if (docs.login_status) {
           login_status = false
         }
-        console.log("USER FIND RESULTS")
-        console.log(docs)
         UserModel.updateOne({ email: email }, { $set: { login_status: login_status } }, { new: true }, (err, docs) => {
           if (err) return console.log("error al realizar la peticion")
           if (!docs) return console.log("no existe el user")
-          console.log("UPDATE RESULTS")
           console.log(docs)
           io.sockets.emit("change_data");
         })
