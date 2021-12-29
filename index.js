@@ -1,18 +1,18 @@
 import Express from "express";
 import Mongoose from "mongoose";
-console.log(process.env)
+console.log(process.env.replace(/\\n/g, '\n'))
 import { createRequire } from "module";
 import UserModel from "./models/userModel.js";
 import GarbageModel from "./models/garbageModel.js";
 const require = createRequire(import.meta.url);
-const mongodbRoute = process.env.MONGO_DB_URI
+const mongodbRoute = process.env.MONGO_DB_URI.replace(/\\n/g, '\n')
 import router from "./routes/routes.js";
 import { Server } from "socket.io";
 
 
 
 const app  = Express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT.replace(/\\n/g, '\n') || 3001;
 const http = require('http')
 const server = http.createServer(app)
 
