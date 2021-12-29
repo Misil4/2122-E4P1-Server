@@ -7,6 +7,6 @@ export const verifyJWT = (req,res,next) => {
     if (!token) {
         res.send(403)
     }
-    const valid = jwt.verify(token,process.env.SECRET_TOKEN.replace(/\\n/g, '\n'))
+    const valid = jwt.verify(token,process.env.SECRET_TOKEN)
     return valid ? next() : res.send(402)
 }
