@@ -7,11 +7,11 @@ import { json } from 'express';
 dotenv.config()
 admin.initializeApp({
     credential: admin.credential.cert({
-        project_id: process.env.FIREBASE_PROJECT_ID.replace(/\\n/g, '\n'),
-        private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID.replace(/\\n/g, '\n'),
+        project_id: process.env.FIREBASE_PROJECT_ID,
+        private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
         private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-        client_email: process.env.FIREBASE_CLIENT_EMAIL.replace(/\\n/g, '\n'),
-        client_id: process.env.FIREBASE_CLIENT_ID.replace(/\\n/g, '\n')
+        client_email: process.env.FIREBASE_CLIENT_EMAIL,
+        client_id: process.env.FIREBASE_CLIENT_ID
     })
 });
 const verifyToken = async (token) => {
@@ -20,10 +20,10 @@ const verifyToken = async (token) => {
 }
 
 const generateAccessToken = (email) => {
-    return jsonwebtoken.sign({email : email},process.env.SECRET_TOKEN.replace(/\\n/g, '\n'),{expiresIn : process.env.EXPIRES_IN.replace(/\\n/g, '\n')})
+    return jsonwebtoken.sign({email : email},process.env.SECRET_TOKEN,{expiresIn : process.env.EXPIRES_IN})
 }
 const generateRefreshToken = (email) => {
-    return jsonwebtoken.sign({email : email},process.env.SECRET_TOKEN_REFRESH.replace(/\\n/g, '\n'))
+    return jsonwebtoken.sign({email : email},process.env.SECRET_TOKEN_REFRESH)
 }
 export const createJWT = async (req,res) =>{
     let token = req.body.token;
@@ -41,7 +41,7 @@ export const createNewJWT = async (req,res) =>{
     let token = req.body.token;
     let email = req.body.email;
     try { 
-        let valid = jsonwebtoken.verify(token,process.env.SECRET_TOKEN_REFRESH.replace(/\\n/g, '\n'));
+        let valid = jsonwebtoken.verify(token,process.env.SECRET_TOKEN_REFRESH);
         if(valid) 
         {
         res.send({data : {access_token :generateAccessToken(email),refresh_token : generateRefreshToken(email)}})
