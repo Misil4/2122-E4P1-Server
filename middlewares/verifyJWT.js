@@ -8,5 +8,5 @@ export const verifyJWT = (req,res,next) => {
         res.send(403)
     }
     const valid = jwt.verify(token,process.env.SECRET_TOKEN)
-    return valid ? next() : res.send(401)
+    return valid ? next() : res.send(402)
 }
