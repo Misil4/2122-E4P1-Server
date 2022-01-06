@@ -28,7 +28,13 @@ io.on('connection', socket => {
       io.sockets.emit("get_users", docs);
     })
   })
+  
+  socket.on("garbage_data", () => {
+    GarbageModel.find({ completed: false }).then(docs => {
+      io.sockets.emit("get_trash", docs);
+    })
 
+  }) 
   try {
   socket.on("badge_update", (email) => {
     console.log("estamos en el server")
@@ -45,27 +51,19 @@ io.on('connection', socket => {
           io.sockets.emit("change_data");
         })
       })
-
-
-
-
-
-    /*UserModel.updateOne({email: email}, { $set: {login_status: login_status} }, { new: true })
-      .then(updatedDoc => {
-        // Emitting event to update the Kitchen opened across the devices with the realtime order values
-        io.sockets.emit("change_data");
-      });*/
   });
+
 } catch (error) {
   console.error(error)
 }
 
-  socket.on("garbage_data", () => {
+  /*socket.on("garbage_data", () => {
     GarbageModel.find({ completed: false }).then(docs => {
       io.sockets.emit("get_trash", docs);
     })
   })
-  socket.send("Hello!");
+  socket.send("Hello!");*/
+
 });
 
 server.listen(port, () => {
