@@ -7,9 +7,8 @@ const require = createRequire(import.meta.url);
 const mongodbRoute = process.env.MONGO_DB_URI
 import router from "./routes/routes.js";
 import { Server } from "socket.io";
-
-
-
+import { userSocket } from "./websocket/userSocket.js";
+import { garbageSocket } from "./websocket/garbageSocket.js";
 const app  = Express();
 const port = process.env.PORT || 3001;
 const http = require('http')
@@ -22,78 +21,8 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     console.log("disconnected")
   })
-
-  socket.on("user_data", () => {
-    UserModel.find({ rol: "user" }).then(docs => {
-      io.sockets.emit("get_users", docs);
-    })
-  })
-  
-  socket.on("garbage_data", () => {
-    GarbageModel.find({ completed: false }).then(docs => {
-        console.log("TRASH DATA")
-        console.log(docs)
-      io.sockets.emit("get_trash", docs);
-    })
-  }) 
-  socket.on("garbage_update", (id_basura) => {
-    GarbageModel.updateOne({_id: id_basura}, { $set: {completed: true} }, { new: true }, (err, docs) => {
-      if (err) return res.status(500).send({ message: `Error al realizar la petición: ${err}` });
-      if (!docs) return res.status(404).send({ message: `No existe ese user` });
-      GarbageModel.find({ completed: false }).then(docs => {
-        console.log("TRASH DATA")
-        console.log(docs)
-      io.sockets.emit("change_trash", docs);
-    })
-  })
-  })
-  socket.on("insert_garbage", (garbage) => {
-    const data = {
-      location: garbage.data,
-      message : "Recoger basura aquí",
-      completed: false,
-      user: garbage.user,
-      date: new Date(parseInt(garbage.data.timestamp))
-  };
-      GarbageModel.create({location: {latitude: data.location.latitude, longitude: data.location.longitude, timestamp:data.date}, message : data.message, completed: data.completed, user: data.user},(err,docs) =>{
-          if(err) return res.status(500).send({message: `Error al realizar la petición: ${err}`});
-          GarbageModel.find({ completed: false }).then(docs => {
-            console.log("TRASH DATA")
-            console.log(docs)
-          io.sockets.emit("change_trash", docs);
-        })
-      })
-  })
-  try {
-  socket.on("badge_update", (email) => {
-    console.log("estamos en el server")
-    console.log(email)
-    let login_status = true;
-      UserModel.findOne({ email: email }, (err, docs) => {
-        if (docs.login_status) {
-          login_status = false
-        }
-        UserModel.updateOne({ email: email }, { $set: { login_status: login_status } }, { new: true }, (err, docs) => {
-          if (err) return console.log("error al realizar la peticion")
-          if (!docs) return console.log("no existe el user")
-          UserModel.find({ rol: "user" }).then(docs => {
-            io.sockets.emit("change_data",docs);
-          })
-        })
-      })
-  });
-
-} catch (error) {
-  console.error(error)
-}
-
-  /*socket.on("garbage_data", () => {
-    GarbageModel.find({ completed: false }).then(docs => {
-      io.sockets.emit("get_trash", docs);
-    })
-  })
-  socket.send("Hello!");*/
-
+  userSocket(io);
+  garbageSocket(io);
 });
 
 server.listen(port, () => {
