@@ -31,8 +31,6 @@ io.on('connection', socket => {
   
   socket.on("garbage_data", () => {
     GarbageModel.find({ completed: false }).then(docs => {
-        console.log("TRASH DATA")
-        console.log(docs)
       io.sockets.emit("get_trash", docs);
     })
 
@@ -58,14 +56,6 @@ io.on('connection', socket => {
 } catch (error) {
   console.error(error)
 }
-
-  /*socket.on("garbage_data", () => {
-    GarbageModel.find({ completed: false }).then(docs => {
-      io.sockets.emit("get_trash", docs);
-    })
-  })
-  socket.send("Hello!");*/
-
 });
 
 server.listen(port, () => {
