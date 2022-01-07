@@ -31,6 +31,8 @@ io.on('connection', socket => {
   
   socket.on("garbage_data", () => {
     GarbageModel.find({ completed: false }).then(docs => {
+        console.log("TRASH DATA")
+        console.log(docs)
       io.sockets.emit("get_trash", docs);
     })
 
