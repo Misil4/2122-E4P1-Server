@@ -48,7 +48,9 @@ io.on('connection', socket => {
           if (err) return console.log("error al realizar la peticion")
           if (!docs) return console.log("no existe el user")
           console.log(docs)
-          io.sockets.emit("change_data");
+          UserModel.find({rol:"user"}).then(docs => {
+            io.sockets.emit("change_data",docs);
+          })
         })
       })
   });
