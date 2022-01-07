@@ -47,13 +47,13 @@ io.on('connection', socket => {
     })
   })
   })
-  socket.on("insert_garbage", (data) => {
+  socket.on("insert_garbage", (garbage) => {
     const data = {
-      location: data.data,
+      location: garbage.data,
       message : "Recoger basura aquí",
       completed: false,
-      user: data.user,
-      date: new Date(parseInt(data.data.timestamp))
+      user: garbage.user,
+      date: new Date(parseInt(garbage.data.timestamp))
   };
       GarbageModel.create({location: {latitude: data.location.latitude, longitude: data.location.longitude, timestamp:data.date}, message : data.message, completed: data.completed, user: data.user},(err,docs) =>{
           if(err) return res.status(500).send({message: `Error al realizar la petición: ${err}`});
