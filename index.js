@@ -47,6 +47,23 @@ io.on('connection', socket => {
     })
   })
   })
+  socket.on("insert_garbage", (data) => {
+    const data = {
+      location: data.data,
+      message : "Recoger basura aquí",
+      completed: false,
+      user: data.user,
+      date: new Date(parseInt(data.data.timestamp))
+  };
+      GarbageModel.create({location: {latitude: data.location.latitude, longitude: data.location.longitude, timestamp:data.date}, message : data.message, completed: data.completed, user: data.user},(err,docs) =>{
+          if(err) return res.status(500).send({message: `Error al realizar la petición: ${err}`});
+          GarbageModel.find({ completed: false }).then(docs => {
+            console.log("TRASH DATA")
+            console.log(docs)
+          io.sockets.emit("change_trash", docs);
+        })
+      })
+  })
   try {
   socket.on("badge_update", (email) => {
     console.log("estamos en el server")
@@ -59,8 +76,9 @@ io.on('connection', socket => {
         UserModel.updateOne({ email: email }, { $set: { login_status: login_status } }, { new: true }, (err, docs) => {
           if (err) return console.log("error al realizar la peticion")
           if (!docs) return console.log("no existe el user")
-          console.log(docs)
-          io.sockets.emit("change_data");
+          UserModel.find({ rol: "user" }).then(docs => {
+            io.sockets.emit("change_data",docs);
+          })
         })
       })
   });
