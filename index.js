@@ -9,6 +9,7 @@ import router from "./routes/routes.js";
 import { Server } from "socket.io";
 import { userSocket } from "./websocket/userSocket.js";
 import { garbageSocket } from "./websocket/garbageSocket.js";
+import { chatSocket } from "./websocket/chatSocket.js";
 const app  = Express();
 const port = process.env.PORT || 3001;
 const http = require('http')
@@ -23,6 +24,7 @@ io.on('connection', socket => {
   })
   userSocket(io);
   garbageSocket(io);
+  chatSocket(io)
 });
 
 server.listen(port, () => {
