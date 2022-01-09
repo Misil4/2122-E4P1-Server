@@ -4,6 +4,8 @@ import { createRequire } from "module";
 import UserModel from "./models/userModel.js";
 import GarbageModel from "./models/garbageModel.js";
 const require = createRequire(import.meta.url);
+import dotenv from 'dotenv'
+dotenv.config()
 const mongodbRoute = process.env.MONGO_DB_URI
 import router from "./routes/routes.js";
 import { Server } from "socket.io";
