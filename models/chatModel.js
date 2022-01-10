@@ -3,10 +3,11 @@ import  Mongoose  from "mongoose";
 const Schema = Mongoose.Schema;
 
 const chatSchema = new Schema({
-    id : String,
+    from : String,
+    to: String,
+    text: String,
     timestamp : String,
-    message: String,
-    user: String
+    room: String
 })
 
 const ChatModel = Mongoose.model("chats", chatSchema);
