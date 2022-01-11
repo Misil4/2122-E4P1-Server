@@ -1,14 +1,11 @@
 import Express from "express";
 import Mongoose from "mongoose";
 import { createRequire } from "module";
-import UserModel from "./models/userModel.js";
-import GarbageModel from "./models/garbageModel.js";
 const require = createRequire(import.meta.url);
 import dotenv from 'dotenv'
 dotenv.config()
 const mongodbRoute = process.env.MONGO_DB_URI
 import router from "./routes/routes.js";
-import { Server } from "socket.io";
 import { userSocket } from "./websocket/userSocket.js";
 import { garbageSocket } from "./websocket/garbageSocket.js";
 import { chatSocket } from "./websocket/chatSocket.js";
@@ -21,6 +18,7 @@ const socketIO = require('socket.io');
 const io = socketIO(server);
 io.sockets.on('connection', socket => {
   console.log('client connected on websocket');
+  console.log(socket.id)
   console.log("ROOMS")
   console.log(socket.rooms)
   socket.on('disconnect', () => {
@@ -60,3 +58,4 @@ Mongoose.connect(mongodbRoute, options, (err) => {
 
   console.log(`Conexión con Mongo correcta.`)
 })
+
