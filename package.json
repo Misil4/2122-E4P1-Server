@@ -27,8 +27,7 @@
     "mongoose": "^6.0.12",
     "nodemon": "^2.0.15",
     "socket.io": "^4.4.0",
-    "start": "^5.1.0",
-    "validator": "^13.7.0"
+    "start": "^5.1.0"
   },
   "type": "module",
   "devDependencies": {
