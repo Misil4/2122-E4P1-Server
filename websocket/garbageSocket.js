@@ -28,8 +28,10 @@ export const garbageSocket = (io) => {
               user: garbage.user,
               date: new Date(parseInt(garbage.data.timestamp))
           };
+          console.log("Garbage insert data")
+          console.log(data)
               GarbageModel.create({location: {latitude: data.location.latitude, longitude: data.location.longitude, timestamp:data.date}, message : data.message, completed: data.completed, user: data.user},(err,docs) =>{
-                if (err) return console.log("error al realizar la peticion")
+                if (err) return console.log("error al realizar la peticion", docs)
                 if (!docs) return console.log("no existe el user")
                   GarbageModel.find({ completed: false }).then(docs => {
                     console.log("TRASH DATA")
