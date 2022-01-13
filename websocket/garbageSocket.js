@@ -11,8 +11,8 @@ export const garbageSocket = (io) => {
           }) 
           socket.on("garbage_update", (id_basura) => {
             GarbageModel.updateOne({_id: id_basura}, { $set: {completed: true} }, { new: true }, (err, docs) => {
-              if (err) return res.status(500).send({ message: `Error al realizar la petición: ${err}` });
-              if (!docs) return res.status(404).send({ message: `No existe ese user` });
+              if (err) return console.log("error al realizar la peticion")
+              if (!docs) return console.log("no existe el user")
               GarbageModel.find({ completed: false }).then(docs => {
                 console.log("TRASH DATA")
                 console.log(docs)
@@ -28,8 +28,11 @@ export const garbageSocket = (io) => {
               user: garbage.user,
               date: new Date(parseInt(garbage.data.timestamp))
           };
+          console.log("Garbage insert data")
+          console.log(data)
               GarbageModel.create({location: {latitude: data.location.latitude, longitude: data.location.longitude, timestamp:data.date}, message : data.message, completed: data.completed, user: data.user},(err,docs) =>{
-                  if(err) return res.status(500).send({message: `Error al realizar la petición: ${err}`});
+                if (err) return console.log("error al realizar la peticion", err)
+                if (!docs) return console.log("no existe el user")
                   GarbageModel.find({ completed: false }).then(docs => {
                     console.log("TRASH DATA")
                     console.log(docs)
