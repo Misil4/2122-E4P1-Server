@@ -8,7 +8,7 @@ export const chatSocket = (io) => {
             console.log(socket.rooms)
         })
         socket.on("insert_message", (data) => {
-            io.broadcast.to(data.room).emit("updated_messages", data)
+            io.to(data.room).emit("updated_messages", data)
         });
 
     })
