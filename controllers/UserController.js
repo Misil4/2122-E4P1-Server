@@ -19,7 +19,8 @@ export const insertUserData = (req, res) => {
         name : req.body.name,
         email : req.body.email,
         rol : "user",
-        login_status : false
+        login_status : false,
+        picture : req.body.picture
     };
     UserModel.findOne({ email: req.body.email }, (err, user) => {
         if (err) return res.status(500).send({ message: `Error al realizar la petición: ${err}` });

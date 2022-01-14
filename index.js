@@ -22,6 +22,7 @@ io.sockets.on('connection', socket => {
   console.log("ROOMS")
   console.log(socket.rooms)
   socket.on('disconnect', () => {
+    
     console.log("disconnected")
   })
   userSocket(io);
