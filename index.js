@@ -22,10 +22,10 @@ io.sockets.on('connection', socket => {
   console.log("SOCKET USER ID")
   console.log(socket.id)
   console.log("ROOMS")
-  socket.on('disconnect', () => {
-    chatSocket(socket)
+  chatSocket(socket)
     userSocket(socket);
     garbageSocket(socket);
+  socket.on('disconnect', () => {
     console.log("disconnected")
   })
 });

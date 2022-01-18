@@ -3,7 +3,7 @@ import UserModel from "../models/userModel.js"
 export const userSocket = (socket) => {
         socket.on("user_data", () => {
             UserModel.find({ rol: "user" }).then(docs => {
-              io.sockets.emit("get_users", docs);
+              socket.emit("get_users", docs);
             })
           })
           socket.on("badge_update", (email) => {
@@ -18,7 +18,7 @@ export const userSocket = (socket) => {
                   if (err) return console.log("error al realizar la peticion")
                   if (!docs) return console.log("no existe el user")
                   UserModel.find({ rol: "user" }).then(docs => {
-                    io.sockets.emit("change_data",docs);
+                    socket.emit("change_data",docs);
                   })
                 })
               })
