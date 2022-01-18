@@ -16,18 +16,18 @@ const server = http.createServer(app)
 
 const socketIO = require('socket.io');
 const io = socketIO(server);
+console.log(io.sockets.adapter.rooms)
 io.sockets.on('connection', socket => {
   console.log('client connected on websocket');
+  console.log("SOCKET USER ID")
   console.log(socket.id)
   console.log("ROOMS")
-  console.log(socket.rooms)
   socket.on('disconnect', () => {
-    
+    chatSocket(socket)
+    userSocket(socket);
+    garbageSocket(socket);
     console.log("disconnected")
   })
-  userSocket(io);
-  garbageSocket(io);
-  chatSocket(io)
 });
 
 server.listen(port, () => {

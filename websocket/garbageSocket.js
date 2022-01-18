@@ -1,7 +1,6 @@
 import GarbageModel from "../models/garbageModel.js";
 
-export const garbageSocket = (io) => {
-    io.sockets.on("connection",(socket) => {
+export const garbageSocket = (socket) => {
         socket.on("garbage_data", () => {
             GarbageModel.find({ completed: false }).then(docs => {
                 console.log("TRASH DATA")
@@ -40,5 +39,4 @@ export const garbageSocket = (io) => {
                 })
               })
           })
-    })
 }

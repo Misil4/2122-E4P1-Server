@@ -1,7 +1,6 @@
 import UserModel from "../models/userModel.js"
 
-export const userSocket = (io) => {
-    io.sockets.on('connection',(socket) => {
+export const userSocket = (socket) => {
         socket.on("user_data", () => {
             UserModel.find({ rol: "user" }).then(docs => {
               io.sockets.emit("get_users", docs);
@@ -23,6 +22,5 @@ export const userSocket = (io) => {
                   })
                 })
               })
-          });
     })
 }
