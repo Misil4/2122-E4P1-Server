@@ -5,7 +5,7 @@ export const garbageSocket = (socket) => {
             GarbageModel.find({ completed: false }).then(docs => {
                 console.log("TRASH DATA")
                 console.log(docs)
-              io.sockets.emit("get_trash", docs);
+              socket.emit("get_trash", docs);
             })
           }) 
           socket.on("garbage_update", (id_basura) => {
@@ -15,7 +15,7 @@ export const garbageSocket = (socket) => {
               GarbageModel.find({ completed: false }).then(docs => {
                 console.log("TRASH DATA")
                 console.log(docs)
-              io.sockets.emit("change_trash", docs);
+              socket.emit("change_trash", docs);
             })
           })
           })
@@ -35,7 +35,7 @@ export const garbageSocket = (socket) => {
                   GarbageModel.find({ completed: false }).then(docs => {
                     console.log("TRASH DATA")
                     console.log(docs)
-                  io.sockets.emit("change_trash", docs);
+                  socket.emit("change_trash", docs);
                 })
               })
           })
