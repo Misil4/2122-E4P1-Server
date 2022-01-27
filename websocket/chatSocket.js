@@ -10,7 +10,7 @@ export const chatSocket = (socket) => {
             console.log("USER DATA")
             console.log(data)
             console.log("ACTIVE ROOMS")
-            console.log(io.sockets.adapter.rooms)
-            io.to(data.room).emit("updated_messages", data)
+            console.log(socket.adapter.rooms)
+            socket.to(data.room).emit("updated_messages", data)
         });
 }
