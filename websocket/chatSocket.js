@@ -13,4 +13,9 @@ export const chatSocket = (socket) => {
             console.log(socket.adapter.rooms)
             socket.to(data.room).emit("updated_messages", data)
         });
+        socket.on("leave", (room) => {
+            console.log(`ROOM LEAVED SUCCESFULLY`)
+            console.log(socket.adapter.rooms)
+            socket.leave(room)
+        })
 }
