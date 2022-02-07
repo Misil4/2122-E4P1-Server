@@ -7,7 +7,8 @@ const UserSchema = Schema({
     email : String,
     rol : String,
     login_status : Boolean,
-    picture : String
+    picture : String,
+    socket : String
 })
 const UserModel = Mongoose.model('users',UserSchema);
 export default UserModel;

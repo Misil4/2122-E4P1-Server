@@ -9,6 +9,7 @@ import router from "./routes/routes.js";
 import { userSocket } from "./websocket/userSocket.js";
 import { garbageSocket } from "./websocket/garbageSocket.js";
 import { chatSocket } from "./websocket/chatSocket.js";
+import UserModel from "./models/userModel.js";
 const app  = Express();
 const port = process.env.PORT || 3001;
 const http = require('http')
@@ -22,6 +23,9 @@ io.sockets.on('connection', socket => {
   console.log("SOCKET USER ID")
   console.log(socket.id)
   console.log("ROOMS")
+  socket.on("id_save", (email) => {
+    UserModel.updateOne({email : email},{$set : {socket : socket.id}})
+  })
   chatSocket(socket)
     userSocket(socket);
     garbageSocket(socket);
