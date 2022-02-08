@@ -1,7 +1,7 @@
 import GarbageModel from "../models/garbageModel.js";
 import UserModel from "../models/userModel.js";
 
-export const garbageSocket = (socket) => {
+export const garbageSocket = (io,socket) => {
         socket.on("garbage_data", (email) => {
           UserModel.findOne({email : email}, (err, docs) => {
             if (err) return console.log("error al realizar la peticion")
@@ -9,7 +9,7 @@ export const garbageSocket = (socket) => {
             GarbageModel.find({ completed: false }).then(data => {
                 console.log("TRASH DATA")
                 console.log(data)
-              socket.to(docs.socket).emit("get_trash", data);
+              io.to(docs.socket).emit("get_trash", data);
             })
           })
           }) 
@@ -20,7 +20,7 @@ export const garbageSocket = (socket) => {
               GarbageModel.find({ completed: false }).then(docs => {
                 console.log("TRASH DATA")
                 console.log(docs)
-              socket.emit("change_trash", docs);
+              io.to("admin").emit("change_trash", docs);
             })
           })
           })
@@ -39,7 +39,7 @@ export const garbageSocket = (socket) => {
                   GarbageModel.find({ completed: false }).then(docs => {
                     console.log("TRASH DATA")
                     console.log(docs)
-                  socket.emit("change_trash", docs);
+                  io.to("admin").emit("change_trash", docs);
                 })
               })
           })

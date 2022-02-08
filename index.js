@@ -10,7 +10,7 @@ import { userSocket } from "./websocket/userSocket.js";
 import { garbageSocket } from "./websocket/garbageSocket.js";
 import { chatSocket } from "./websocket/chatSocket.js";
 import UserModel from "./models/userModel.js";
-const app  = Express();
+const app = Express();
 const port = process.env.PORT || 3001;
 const http = require('http')
 const server = http.createServer(app)
@@ -24,11 +24,19 @@ io.sockets.on('connection', socket => {
   console.log(socket.id)
   console.log("ROOMS")
   socket.on("id_save", (email) => {
-    UserModel.updateOne({email : email},{$set : {socket : socket.id}})
+    UserModel.findOne({ email: email }, (err, docs) => {
+      if (err) return console.log("error al realizar la peticion")
+      if (!docs) return console.log("no existe el user")
+      if (docs.rol === "admin") {
+        socket.join("admin")
+      }
+    })
+    UserModel.updateOne({ email: email }, { $set: { socket: socket.id } }, { new: true }, (err, docs) => {
+    })
   })
-  chatSocket(socket)
-    userSocket(socket);
-    garbageSocket(socket);
+  chatSocket(io, socket)
+  userSocket(io, socket);
+  garbageSocket(io, socket);
   socket.on('disconnect', () => {
     console.log("disconnected")
   })
