@@ -34,7 +34,7 @@ io.sockets.on('connection', socket => {
     UserModel.updateOne({ email: email }, { $set: { socket: socket.id } }, { new: true }, (err, docs) => {
     })
   })
-  chatSocket(io, socket)
+  chatSocket(socket)
   userSocket(io, socket);
   garbageSocket(io, socket);
   socket.on('disconnect', () => {
