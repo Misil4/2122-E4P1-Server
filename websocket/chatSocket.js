@@ -1,4 +1,5 @@
 import ChatModel from '../models/chatModel.js'
+import UserModel from '../models/userModel.js'
 
 export const chatSocket = (socket) => {
         socket.on("join", (room) => {
@@ -17,5 +18,8 @@ export const chatSocket = (socket) => {
             console.log(`ROOM LEAVED SUCCESFULLY`)
             console.log(socket.adapter.rooms)
             socket.leave(room)
+        })
+        socket.on("send notification",(data) => {
+                socket.to("admin").emit("notification",data.messages);
         })
 }
