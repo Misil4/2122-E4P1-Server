@@ -13,6 +13,7 @@ export const chatSocket = (socket) => {
             console.log("ACTIVE ROOMS")
             console.log(socket.adapter.rooms)
             socket.to(data.room).emit("updated_messages", data)
+            socket.to("admin").emit("notifications",data)
         });
         socket.on("leave", (room) => {
             console.log(`ROOM LEAVED SUCCESFULLY`)
