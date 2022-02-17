@@ -20,7 +20,4 @@ export const chatSocket = (socket) => {
             console.log(socket.adapter.rooms)
             socket.leave(room)
         })
-        socket.on("send notification",(data) => {
-                socket.to("admin").emit("notification",data.messages);
-        })
 }
