@@ -11,11 +11,18 @@ export const userSocket = (io,socket) => {
       })
     })
   })
+  socket.on("qr_scanned" ,(email) => {
+    UserModel.findOne({email : email}, (err,user) => {
+      console.log("pepe")
+
+      io.emit("scanned",true)
+    })
+  })
   socket.on("badge_update", (email) => {
-    console.log("estamos en el server")
     console.log(email)
     let login_status = true;
     UserModel.findOne({ email: email }, (err, docs) => {
+      console.log(docs.socket)
       if (docs.login_status) {
         login_status = false
       }
