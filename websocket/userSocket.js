@@ -14,9 +14,7 @@ export const userSocket = (io, socket) => {
   socket.on("qr_scanned", (email) => {
     try {
       UserModel.findOne({ email: email }, (err, user) => {
-        console.log("pepe")
-
-        io.emit("scanned", true)
+        socket.to(user.socket).emit("scanned", true)
       })
     } catch (error) {
       console.error(error)

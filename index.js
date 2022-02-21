@@ -40,6 +40,20 @@ io.sockets.on('connection', socket => {
   socket.on('disconnect', () => {
     console.log("disconnected")
   })
+  socket.on("request_location", (data) => {
+    console.log("REQUEST LOCATION")
+    console.log(data)
+    UserModel.findOne({email : data.userEmail},(err,docs) => {
+      io.to(docs.socket).emit("user_location",data.adminEmail)
+    })
+  })
+  socket.on("send_location",(data) => {
+    console.log("SEND LOCATION")
+    console.log(data)
+    UserModel.findOne({email : data.adminEmail},(err,docs) => {
+      io.to(docs.socket).emit("new_location",data.location)
+    })
+  })
 });
 
 server.listen(port, () => {
