@@ -1,4 +1,5 @@
 import  Express  from "express";
+import fs from "fs";
 
 const router = Express.Router();
 import { getAllUsers, getUserById, insertUserData, updateUserData, deleteUserData, updateUserStatus} from "../controllers/UserController.js";
@@ -25,6 +26,15 @@ router.post('/garbages/',verifyJWT,insertGarbageData);
 router.put('/garbages/:id',verifyJWT,updateGarbageData);
 router.put('/garbages/',verifyJWT,updateGarbageStatus);
 router.delete('/garbages/:id',verifyJWT,deleteGarbageData);
+
+router.get('/',(req, res) => {
+    fs.readFile('./index.html', function (err, html) {
+        if (err) {
+            throw err; 
+        }       
+            res.write(html);
+    });
+})
 
 
 export default router;
