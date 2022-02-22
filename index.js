@@ -41,18 +41,20 @@ io.sockets.on('connection', socket => {
     console.log("disconnected")
   })
   socket.on("request_location", (data) => {
+    try {
     console.log("REQUEST LOCATION")
     console.log(data)
     UserModel.findOne({email : data.userEmail},(err,docs) => {
       io.to(docs.socket).emit("user_location",data.adminEmail)
-    })
+    })} catch (error) {console.error(error)}
   })
   socket.on("send_location",(data) => {
+    try {
     console.log("SEND LOCATION")
     console.log(data)
     UserModel.findOne({email : data.adminEmail},(err,docs) => {
       io.to(docs.socket).emit("new_location",data.location)
-    })
+    })} catch (error) {console.error(error)}
   })
 });
 
